@@ -1,0 +1,34 @@
+html {
+  position: relative;
+  min-height: 100%;
+}
+
+header {
+  color: #fff;
+}
+
+body {
+  margin-bottom: 60px
+}
+
+footer {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  height: 60px;
+  line-height: 60px;
+  background-color: lightgrey;
+}
+
+.form-signin,
+.form-register {
+  max-width: 330px;
+  margin: 0 auto;
+}
+
+img {
+  max-width: 40%;
+  height: auto;
+}
+
+
