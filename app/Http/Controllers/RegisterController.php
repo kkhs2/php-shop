@@ -19,7 +19,6 @@ class RegisterController extends Controller
           !empty($customer['password']) &&
           !$customerTable->select('email', $customer['email'])) {
           // passed all the checks so attempt to add user into database, ensure to hash the password when pushing the website into production
-        //$register['password'] = password_hash($register['password'], PASSWORD_DEFAULT); 
 
         // a bit crap to do the $customer array like below, but it'll do for now
         $customer['houseNumberName'] = '';
@@ -28,7 +27,10 @@ class RegisterController extends Controller
         $customer['postCode'] = '';
         $customer['stateCounty'] = '';
         $customer['country'] = '';
+        $customer['password'] = password_hash($customer['password'], PASSWORD_DEFAULT); 
+
         $insertCustomer = $customerTable->save($customer, 'insert');
+        
         
         if (!$insertCustomer) {
           return back()->with('error', 'Sorry your details were not registered. Please ensure that you have entered your details correctly.');

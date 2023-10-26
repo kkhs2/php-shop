@@ -24,7 +24,7 @@ return new class extends Migration
             $table->string('postCode');
             $table->string('stateCounty');
             $table->string('country');
-            $table->string('email');
+            $table->string('email')->unique();
             $table->string('password');
             $table->timestamps();
         });

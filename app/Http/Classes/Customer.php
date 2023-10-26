@@ -3,32 +3,23 @@ namespace App\Http\Classes;
 
 use DB;
 
-class User {
-  private $title;
-  private $firstName;
-  private $lastName;
-  private $email;
-  private $password;
+class Customer {
 
-  public function __construct(private array $user) {
+  public function __construct(private $customer) {
     
   }
 
-  public function getFirstName() {
-    return $this->firstName;
+  public function getCustomer() {
+    return $this->customer;
   }
 
-  public function getLastName() {
-    return $this->lastName;
-  }
 
   public function getEmail() {
-    return $this->email;
+    return $this->customer->email;
   }
 
 
-  public function insertUser() {
-    $user = new Database('customer');
-    
+  public function insertCustomer() {
+    $customer = new Database('customers');
   }
 }
