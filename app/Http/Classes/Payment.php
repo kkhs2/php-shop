@@ -1,8 +1,12 @@
 <?php
 namespace App\Http\Classes;
 use Adyen\Client;
-use Adyen\Service\Checkout;
-use Adyen\Service\ResourceModel\Checkout\Captures;
+use Adyen\Model\Checkout\PaymentMethodsRequest;
+use Adyen\Model\Checkout\PaymentRequest;
+use Adyen\Model\Checkout\PaymentCaptureRequest;
+use Adyen\Model\Checkout\PaymentDetailsRequest;
+use Adyen\Service\Checkout\ModificationsApi;
+use Adyen\Service\Checkout\PaymentsApi;
 
 
 class Payment {
@@ -15,7 +19,8 @@ class Payment {
 		$this->client = new Client();
 		$this->client->setEnvironment(\Adyen\Environment::TEST);
 		$this->client->setXApiKey(env('ADYEN_API_KEY'));
-		$this->service = new Checkout($this->client);
+		$this->client->setTimeout(30);
+		$this->service = new PaymentsApi($this->client);
 	}
 
 	public function paymentMethods() {
@@ -23,21 +28,21 @@ class Payment {
 			'countryCode' => env('ADYEN_COUNTRY_CODE'),
   		'shopperLocale' => env('ADYEN_SHOPPER_LOCALE'),
 			'channel' => env('ADYEN_CHANNEL'),
-			'merchantAccount' => env('ADYEN_MERCHANT_ACCOUNT'),
-
+  		'merchantAccount' => env('ADYEN_MERCHANT_ACCOUNT'),
 		];
-		$result = $this->service->paymentMethods($params);
-		return $result['paymentMethods'][0]['brands'];
+		$request = new PaymentMethodsRequest($params);
+		$paymentMethods = $this->service->paymentMethods($request);
+		return $paymentMethods['paymentMethods'][0]['brands'];
 	}
 
 	public function payments($params = []) {
-		$result = $this->service->payments($params);
+		$request = new PaymentRequest($params);
+		$result = $this->service->payments($request);
 
 		/* payment qualifies for threeDS2 */
 		if ($result['action']['type'] == 'threeDS2') {
 			return $result['action'];
 		}
-
 	}
 
 	
@@ -59,32 +64,19 @@ class Payment {
 	*/
 
 	public function capture($authResult) {
-
-		dd($authResult);
-
-		//$capturesEndpoint = $capture->getCheckoutEndpoint($this->service) . '/' . $this->service->getClient()->getApiAccountVersion() . '/payments/' . $authResult['pspReference'] . '/captures';
-
-
-		$captureParams = [
+		$modification = new ModificationsApi($this->client);
+		$params = [
 			'merchantAccount' => env('ADYEN_MERCHANT_ACCOUNT'),
 			'amount' => $authResult['amount'],
 			'reference' => $authResult['merchantReference']
 		];
-
-		$result = $this->service->captures($captureParams);
-		dd($result);
-
-		
-		//$result = $this->service->captures($captureParams);
-
-		
-		
+		$request = new PaymentCaptureRequest($params);
+		return $modification->captureAuthorisedPayment($authResult['pspReference'], $request);
 	}
 
 
-	public function paymentDetails($threeDSResult) {
-
-		$result = $this->service->paymentsDetails($threeDSResult);
-		return $result;
+	public function paymentDetails($threeDsResult) {
+		$request = new PaymentDetailsRequest($threeDsResult);
+		return $this->service->paymentsDetails($request);
 	}
 }

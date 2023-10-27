@@ -104,7 +104,7 @@ class PaymentController extends Controller
       if ($authResult['resultCode'] != 'Authorised') {
         return back()->with('error', 'Your card authentication was not successful. Please try again or try with an alternative payment method.');
       }
-      /* if set to manual capture, so need to call the captures method with the PSP reference returned from successful authorisation. Passing required params, and also need to generate the URL endpoint manually because currently cannot figure out a way to use the library methods to pass in the pspReference required in the URL. Otherwise, it is automatic capture so don't need to do any further steps. Now, we are attempting to do manual capture */
+      /* if set to manual capture, we need to call the captures method with the PSP reference returned from successful authorisation. Passing required params, and also need to generate the URL endpoint manually because currently cannot figure out a way to use the library methods to pass in the pspReference required in the URL. Otherwise, it is automatic capture so don't need to do any further steps. Now, we are attempting to do manual capture */
       $payment->capture($authResult);
       
 

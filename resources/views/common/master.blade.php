@@ -12,7 +12,7 @@
   <body>
     <header data-bs-theme="dark">
       <nav class="navbar navbar-expand-md navbar-dark bg-dark">
-        <div class="container-fluid">
+        <div class="container">
           <a class="navbar-brand text-white">
             <!-- svg logo -->
             <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="bi bi-shop" viewBox="0 0 16 16">
