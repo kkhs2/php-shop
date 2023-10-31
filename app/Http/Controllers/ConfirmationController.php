@@ -11,8 +11,9 @@ class ConfirmationController extends Controller
     public function index() {
       $basket = session()->get('basket.items');
       $totalPrice = array_sum(array_values(array_column($basket, 'price')));
+      
 
-      Mail::to('shumkhk@gmail.com')->send(new OrderConfirmation());
+      Mail::to(env('MAIL_SEND_TO'))->send(new OrderConfirmation());
 
       return view('confirmation', [
         'basket' => $basket,

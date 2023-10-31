@@ -18,18 +18,19 @@ class ProductsController extends Controller
         if($e = curl_error($curl)) {
             echo $e;
         } else {
-            // Decoding JSON data
-            $productsData = json_decode($response, true);
-
-                 
+           // Decoding JSON data
+           $productsData = json_decode($response, true);
+        
             // Outputting JSON data in
             // Decoded form
 
             foreach ($productsData as $key => $val) {
                 //$products[$key]['price'] = number_format($val['price'], 2);
                 $productsData[$key]['price'] = $val['price'];
-               
+                
             }
+            // Closing curl
+            curl_close($curl);
             return view('products', ['products' => $productsData]);
         }
          

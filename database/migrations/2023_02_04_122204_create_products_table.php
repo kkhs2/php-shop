@@ -22,7 +22,8 @@ return new class extends Migration
             $table->integer('stock');
             $table->string('brand');
             $table->integer('category_id');
-            $table->timestamps();
+            $table->timestamp('created_at')->useCurrent();
+            $table->timestamp('updated_at')->useCurrent()->useCurrentOnUpdate();
         });
     }
 

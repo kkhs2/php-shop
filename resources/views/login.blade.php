@@ -1,7 +1,6 @@
 @extends('common.master')
 @section('content')
-
-
+<div class="form">
   <form method="POST" name="loginForm" id="loginForm" class="form-signin w-100 m-auto" action="{{ url('/login') }}">
     @csrf
     <div class="form-floating mb-3">
@@ -14,4 +13,5 @@
     </div>
     <button type="submit" name="loginButton" id="loginButton" class="w-100 btn btn-lg btn-primary">Login</button>
   </form>
+</div>
 @endsection

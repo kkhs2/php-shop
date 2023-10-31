@@ -36,7 +36,7 @@ class RegisterController extends Controller
           return back()->with('error', 'Sorry your details were not registered. Please ensure that you have entered your details correctly.');
         }
 
-        Mail::to('shumkhk@gmail.com')->send(new RegistrationSuccessful());
+        Mail::to(env('MAIL_SEND_TO'))->send(new RegistrationSuccessful());
         return redirect('login')->with('success', 'Your account has been created.');
         
       } else {

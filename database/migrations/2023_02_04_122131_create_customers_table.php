@@ -26,7 +26,8 @@ return new class extends Migration
             $table->string('country');
             $table->string('email')->unique();
             $table->string('password');
-            $table->timestamps();
+            $table->timestamp('created_at')->useCurrent();
+            $table->timestamp('updated_at')->useCurrent()->useCurrentOnUpdate();
         });
     }
 
